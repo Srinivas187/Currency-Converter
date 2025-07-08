@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Currency Converter</title>
+  <style>
+    body {
+      background: linear-gradient(to right, black, #00008b);
+      padding-top: 5%;
+    }
+    #container {
+      border: 1px solid white;
+      text-align: center;
+      height: 460px;
+      width: 450px;
+      margin-left: 35%;
+      border-radius: 40px;
+      padding-top: 0%;
+    }
+    .input {
+      position: relative;
+      width: 220px;
+      margin-left: 14%;
+    }
+    .input span {
+      position: absolute;
+      top: 52%;
+      left: 10px;
+      transform: translateY(-60%);
+      color: black;
+      font-size: 20px;
+    }
+    #Currency {
+      border: 1px solid #00dfd8;
+      border-radius: 7px;
+      height: 40px;
+      width: 300px;
+      padding-left: 30px;
+    }
+    #container2, #container3 {
+      border: 1px solid black;
+      border-radius: 10px;
+      height: 40px;
+      width: 150px;
+      margin-left: 1.5%;
+    }
+    #container2 option, #container3 option {
+      font-size: 150%;
+      font-style: oblique;
+    }
+    button {
+      color: white;
+      background-color: #0077b6;
+      border-color: whitesmoke;
+      height: 40px;
+      width: 150px;
+      border-radius: 10px;
+    }
+    .container5 {
+      display: flex;
+      align-items: center;
+      margin-left: 14%;
+      padding-top: 5%;
+      
+    }
+    .container6 {
+      padding-top: 5%;
+    }
+    #container h1 {
+      color: white;
+      padding-top: 0.1%;
+    }
+    button:hover {
+      background-color: #00008b;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1><b>Currency Converter</b></h1><br><br>
+    <div class="input">
+      <span id="currencySymbol">₹</span>
+      <input type="number" placeholder="Enter Your Amount" id="Currency" />
+    </div>
+    <br /><br />
+    <div class="container5">
+      <select id="container2" onchange="updateSymbol()">
+        <option value="dollar"> USD (American Dollar)</option>
+        <option value="rupee"> INR (Indian Rupee)</option>
+        <option value="pound"> POUND (Great Britian Pound)</option>
+        <option value="yen"> YEN (Japanees Yen)</option>
+        <option value="ruble"> RUBLE (Russsian Ruble)</option>
+        <option value="euro"> EURO (Eurozone)</option>
+        <option value="yuan"> YUAN (Chineese yuan)</option>
+        <option value="driham">DRIHAM (UAE)</option>
+        <option value="peso"> PESO (Mexican peso)</option>
+        <option value="rand"> RAND (South Africa)</option>
+        <option value="Krona"> KRONA (Sweden)</option>
+      </select>
+      &rarr;
+      <select id="container3">
+        <option value="rupee"> INR (Indian Rupee)</option>
+        <option value="dollar"> USD (American Dollar)</option>
+        <option value="pound"> POUND (Great Britian Pound)</option>
+        <option value="yen"> YEN (Japanees Yen)</option>
+        <option value="ruble"> RUBLE (Russsian Ruble)</option>
+        <option value="euro"> EURO (Eurozone)</option>
+        <option value="yuan"> YUAN (Chineese yuan)</option>
+        <option value="driham">DRIHAM (UAE)</option>
+        <option value="peso"> PESO (Mexican peso)</option>
+        <option value="rand"> RAND (South Africa)</option>
+        <option value="Krona"> KRONA (Sweden)</option>
+      </select>
+    </div>
+    <br /><br />
+    <div class="container6">
+      <button onclick="money()">Convert</button>
+    </div>
+    <h1 id="display"></h1>
+
+    <script>
+      const symbolMap = {
+        rupee: "₹", dollar: "$", pound: "£", yen: "¥", ruble: "₽", euro: "€", yuan: "¥", driham: "د.إ", peso: "$", rand: "R", krona: "kr"
+      };
+
+      function updateSymbol() {
+        let from = document.getElementById("container2").value.toLowerCase();
+        document.getElementById("currencySymbol").innerText = symbolMap[from] || "";
+      }
+      function money() {
+        let from = document.getElementById("container2").value.toLowerCase();
+        let to = document.getElementById("container3").value.toLowerCase();
+        let AMOUNT = Number(document.getElementById("Currency").value);
+        let result;
+
+        if (isNaN(AMOUNT) || AMOUNT <= 0) {
+          document.getElementById("display").innerHTML = "Please enter a valid amount";
+          return;
+        }
+
+        const rates = {
+          rupee: { dollar: 0.012, pound: 0.011, yen: 1.68, ruble: 0.93, euro: 0.0101, yuan: 0.0834, dirham: 0.04265, peso: 0.2202, rand: 0.2084, krona: 0.1103 },
+          dollar: { rupee: 83.5, pound: 0.79, yen: 144.17, ruble: 79.7, euro: 0.866, yuan: 7.18, dirham: 3.672, peso: 18.94, rand: 19.9, krona: 9.48 },
+          pound: { rupee: 106.0, dollar: 1.27, yen: 183.2, ruble: 108.9, euro: 1.176, yuan: 9.74, dirham: 4.98, peso: 25.73, rand: 24.4, krona: 12.88 },
+          yen: { rupee: 0.5976, dollar: 0.00694, pound: 0.00511, ruble: 0.553, euro: 0.0060, yuan: 0.0499, dirham: 0.0254, peso: 0.1315, rand: 0.1245, krona: 0.066 },
+          ruble: { rupee: 1.08, dollar: 0.01255, pound: 0.00924, yen: 1.81, euro: 0.01086, dirham: 0.0461, peso: 0.238, yuan: 0.09, rand: 0.2263, krona: 0.122 },
+          euro: { rupee: 99.48, dollar: 1.1511, pound: 0.8518, yen: 166.4, ruble: 92.1, dirham: 4.24, peso: 21.9, yuan: 8.3, rand: 20.72, krona: 10.94 },
+          dirham: { rupee: 23.45, dollar: 0.2723, pound: 0.2007, yen: 39.23, ruble: 21.71, euro: 0.2356, peso: 5.16, yuan: 1.956, rand: 0.226, krona: 2.58 },
+          peso: { rupee: 4.08, dollar: 0.0528, pound: 0.0415, yen: 7.11, ruble: 3.95, euro: 0.0457, yuan: 0.31, dirham: 0.194, rand: 0.2, krona: 0.11 },
+          yuan: { rupee: 11.99, dollar: 0.1319, pound: 0.1026, yen: 20.06, ruble: 11.11, euro: 0.1205, dirham: 0.5114, peso: 2.64, rand: 0.23, krona: 1.19 },
+          rand: { rupee: 4.8, dollar: 0.05577, pound: 0.0411, yen: 8.03, ruble: 4.45, euro: 0.0483, dirham: 0.146, peso: 1.06, yuan: 0.4005, krona: 0.53 },
+          krona: { rupee: 8.32, dollar: 0.10544, pound: 0.0859, yen: 15.19, ruble: 8.4, euro: 0.0914, driham: 0.387, peso: 2.0, yuan: 0.757, rand: 1.9 }
+        };
+
+        if (rates[from] && rates[from][to]) {
+          result = AMOUNT * rates[from][to];
+        } else if (from === to) {
+          result = AMOUNT;
+        } else {
+          document.getElementById("display").innerHTML = "Conversion rate not available";
+          return;
+        }
+        let symbol = symbolMap[to] || "";
+        document.getElementById("display").innerHTML = "Amount: " + symbol +' ' + result.toFixed(4);
+      }
+      window.onload = updateSymbol;
+    </script>
+</body>
+</html>
